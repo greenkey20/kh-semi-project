@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>키워드 선택(해서 여행지 추천) 관련 쿼리문들</comment>
+	<!--2022.1.19(수) 17h-->
+	
+	<!--2022.1.21(금) 20h35-->
+	<entry key="selectRestaurantList">		
+		SELECT * FROM (SELECT RS_NO, CATEGORY, RS_NAME, DESCRIPTION, ADDRESS, PHONE, MENU, PRICE, FILE_PATH||FILE_NAME "TITLEIMG", AREA
+				        FROM RESTAURANT
+				        WHERE CATEGORY = ? AND AREA LIKE '%'||?||'%' AND STATUS = 'Y'
+				        ORDER BY DBMS_RANDOM.VALUE)
+		WHERE ROWNUM IN (1, 2, 3)
+	</entry>
+	
+	<!--2022.1.21(금) 17h40 -> 20h35 이후 필요 없게 됨-->
+	<!--if (foodType = JEJU, rNum2 = 9, foodListCount = 11)-->
+	<entry key="selectRestaurantList1">		
+		SELECT RS_NO, CATEGORY, RS_NAME, DESCRIPTION, ADDRESS, PHONE, MENU, PRICE, FILE_PATH||FILE_NAME "TITLEIMG"
+		FROM RESTAURANT
+		WHERE RS_NO IN (?, ? + 1, ? + 2) AND STATUS = 'Y'
+	</entry>
+	
+	<!--if (foodType = JEJU, rNum2 = 10, foodListCount = 11)-->
+	<entry key="selectRestaurantList2">		
+		SELECT RS_NO, CATEGORY, RS_NAME, DESCRIPTION, ADDRESS, PHONE, MENU, PRICE, FILE_PATH||FILE_NAME "TITLEIMG"
+		FROM RESTAURANT
+		WHERE RS_NO IN (?, ?, 1) AND STATUS = 'Y'
+	</entry>
+		
+	<!--if (foodType = JEJU, rNum2 = 11, foodListCount = 11)-->
+	<entry key="selectRestaurantList3">		
+		SELECT RS_NO, CATEGORY, RS_NAME, DESCRIPTION, ADDRESS, PHONE, MENU, PRICE, FILE_PATH||FILE_NAME "TITLEIMG"
+		FROM RESTAURANT
+		WHERE RS_NO IN (?, 1, 2) AND STATUS = 'Y'
+	</entry>
+	
+	<!--2022.1.28(금) 14h20~ 필요 없는 듯-->
+	<entry key="selectListCount">
+		SELECT COUNT(*) COUNT
+		FROM ?
+		WHERE STATUS = 'Y'
+		<!--? = 사용자가 선택한 여행/음식 타입-->
+	</entry>	
+	
+	<!--2022.1.21(금) 15h40 -> 20h15 수정-->
+	<entry key="selectTravelSpotList1">
+		SELECT *
+		FROM (SELECT TS_NO, CATEGORY, NAME, DESCRIPTION, ADDRESS, PHONE, PRICE, FILE_PATH||FILE_NAME "TITLEIMG"
+			  FROM HOTEL
+			  WHERE STATUS = 'Y'
+			  ORDER BY DBMS_RANDOM.VALUE)
+		WHERE ROWNUM = 1
+	</entry>
+	
+	<entry key="selectTravelSpotList2">
+		SELECT *
+		FROM (SELECT TS_NO, CATEGORY, NAME, DESCRIPTION, ADDRESS, PHONE, PRICE, FILE_PATH||FILE_NAME "TITLEIMG"
+			  FROM LANDSCAPE
+			  WHERE STATUS = 'Y'
+			  ORDER BY DBMS_RANDOM.VALUE)
+		WHERE ROWNUM = 1
+	</entry>
+	
+	<!--2022.1.23(일) 16h25-->
+	<entry key="selectActivityList">
+		SELECT *
+		FROM (SELECT TS_NO, CATEGORY, NAME, DESCRIPTION, ADDRESS, PHONE, PRICE, EQUIPMENT, FILE_PATH||FILE_NAME "TITLEIMG", AREA
+			  FROM ACTIVITY
+			  WHERE STATUS = 'Y'
+			  ORDER BY DBMS_RANDOM.VALUE)
+		WHERE ROWNUM = 1
+	</entry>
+
+	<!--========================================-->	
+	<!--2022.1.1() h-->
+	<entry key="">
+		
+	</entry>
+	
+	<!--2022.1.1() h-->
+	<entry key="">
+		
+	</entry>
+
+</properties>

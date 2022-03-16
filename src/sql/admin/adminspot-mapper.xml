@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>여행지 관리 관련 쿼리문들</comment>
+	<!--2022.1.29(토) 22h20-->
+	
+	<!--2022.2.1(화) 13h45-->
+	<entry key="updateAttachment">
+		UPDATE ATTACHMENT
+		SET REF_TSNO = ?, REF_CATEGORY = ?, ORIGIN_NAME = ?, CHANGE_NAME = ?, FILE_PATH = ?, UPLOAD_DATE = SYSDATE, FILE_LEVEL = ?
+		WHERE FILE_NO = ?
+	</entry>
+	
+	<!--2022.2.1(화) 13h55-->
+	<entry key="insertAttachment">
+		INSERT INTO ATTACHMENT(FILE_NO, REF_TSNO, REF_CATEGORY, ORIGIN_NAME, CHANGE_NAME, FILE_PATH, FILE_LEVEL)
+		VALUES(SEQ_FNO.NEXTVAL, ?, ?, ?, ?, ?, ?)
+	</entry>
+	
+	<!--2022.2.2(수) 15h25-->
+	<entry key="selectRestaurantListCount">
+		SELECT COUNT(*) COUNT
+		FROM RESTAURANT
+		WHERE CATEGORY = ? AND STATUS = 'Y'
+	</entry>
+	
+	<!--2022.2.2(수) 16h-->
+	<entry key="selectRestaurantList">
+		SELECT * FROM (SELECT ROWNUM RNUM, A.*
+		               FROM (SELECT RS_NO, CATEGORY, RS_NAME, ADDRESS, PHONE, MENU, PRICE, AREA,
+		                            (SELECT COUNT(*) COUNT FROM MEMBERTRAVELHISTORY
+		                             WHERE RESTAURANT1 = RS_NO OR RESTAURANT2 = RS_NO OR RESTAURANT3 = RS_NO) VISITCOUNT
+					   		  FROM RESTAURANT
+					   		  WHERE CATEGORY = ? AND STATUS = 'Y'
+					   		  ORDER BY RS_NO DESC) A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<!--2022.2.2(수) 18h35-->
+	<entry key="insertRestaurant">
+		INSERT INTO RESTAURANT(RS_NO, CATEGORY, RS_NAME, DESCRIPTION, ADDRESS, PHONE, MENU, PRICE, FILE_PATH, FILE_NAME, AREA)
+		VALUES(SEQ_RNO.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	</entry>
+	
+	<!--2022.2.2(수) 22h45-->
+	<entry key="selectRestaurant">
+		SELECT RS_NO, CATEGORY, RS_NAME, DESCRIPTION, ADDRESS, PHONE, MENU, PRICE, FILE_PATH||FILE_NAME TITLEIMG, AREA,
+		       (SELECT COUNT(*) COUNT FROM MEMBERTRAVELHISTORY
+		        WHERE RESTAURANT1 = RS_NO OR RESTAURANT2 = RS_NO OR RESTAURANT3 = RS_NO) VISITCOUNT
+		FROM RESTAURANT
+		WHERE RS_NO = ? AND STATUS = 'Y'
+	</entry>
+	
+	<!--2022.2.2(수) 23h35-->
+	<entry key="selectAttachmentList">
+		SELECT FILE_NO, ORIGIN_NAME, CHANGE_NAME, FILE_PATH
+		FROM ATTACHMENT
+		WHERE STATUS = 'Y' AND REF_TSNO = ? AND REF_CATEGORY = ?
+	</entry>
+	
+	<!--2022.2.3(목) 1h25-->
+	<entry key="updateRestaurant">
+		UPDATE RESTAURANT
+		SET CATEGORY = ?, RS_NAME = ?, DESCRIPTION = ?, ADDRESS = ?, PHONE = ?, MENU = ?, PRICE = ?, FILE_PATH = ?, FILE_NAME = ?, AREA = ?
+		WHERE RS_NO = ?
+	</entry>
+	
+	<!--2022.2.3(목) 2h25-->
+	<entry key="deleteRestaurant">
+		UPDATE RESTAURANT
+		SET STATUS = 'N'
+		WHERE RS_NO = ?
+	</entry>
+	
+	<!--2022.2.() h-->
+	<entry key="">
+		
+	</entry>
+
+</properties>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>회원 관련 쿼리문들</comment>
+	<!--2022.1.27(목) 14h45-->
+	
+	<entry key="insertMemberTravelHistory">
+	<!--2022.1.29(토) 21h55 TRAVELTYPE3, TRAVELSPOT3 삭제-->
+		INSERT INTO MEMBERTRAVELHISTORY(MTH_NO, USER_NO, TRAVELTYPE1, TRAVELSPOT1, FOODTYPE, RESTAURANT1, RESTAURANT2, RESTAURANT3)
+		VALUES(SEQ_MTHNO.NEXTVAL, ?, ?, ?, ?, ?, ?, ?)
+	</entry>
+	
+	<entry key="loginMember">
+		SELECT *
+    	  FROM MEMBER
+		WHERE USER_ID = ?
+    	  AND USER_PWD = ?
+    	  AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="updateMember">
+      UPDATE 
+      		MEMBER
+         SET 
+           USER_NAME = ?
+         , PHONE = ?
+         , EMAIL = ?
+         , ADDRESS = ?
+         , INTEREST = ?
+         , MODIFY_DATE = SYSDATE
+      WHERE 
+      		USER_ID = ?
+   </entry>
+   
+   <entry key="selectMember">
+    SELECT * 
+      FROM 
+      		MEMBER 
+      WHERE 
+      		USER_ID = ? 
+      AND 
+      		STATUS = 'Y'
+   </entry>
+   
+	<entry key="updatePwdMember">
+      UPDATE MEMBER
+         SET USER_PWD = ?
+         , MODIFY_DATE = SYSDATE
+      WHERE USER_ID = ? 
+      AND USER_PWD = ?
+   </entry>
+   
+   <entry key="deleteMember">
+   UPDATE 
+   			MEMBER
+   	SET	
+   			STATUS ='N'
+   			,MODIFY_DATE = SYSDATE
+   		WHERE USER_ID = ?
+   			AND USER_PWD = ?			
+   </entry>
+   
+   <entry key="findId">
+   SELECT USER_ID FROM MEMBER
+   WHERE USER_NAME = ?
+   AND EMAIL = ?
+   AND STATUS = 'Y'
+   </entry>
+   
+   <entry key="findpWd">
+   SELECT COUNT(*) COUNT FROM MEMBER
+   WHERE USER_ID = ?
+   AND EMAIL = ?
+   AND STATUS = 'Y'
+   </entry>
+   
+   <entry key="temporaryPwd">
+   UPDATE MEMBER
+   SET USER_PWD = ?
+      , MODIFY_DATE = SYSDATE
+   WHERE USER_ID = ?
+   AND EMAIL = ?   
+   </entry>
+	
+	<entry key="insertMember">
+	INSERT 
+		   INTO MEMBER
+		          (
+		            USER_NO
+		           ,USER_ID
+		           ,USER_PWD
+		           ,USER_NAME
+		           ,EMAIL
+		           ,PHONE
+		           ,ADDRESS
+		           ,INTEREST
+		          )
+            VALUES
+                  (
+                    SEQ_MNO.NEXTVAL
+                    ,?
+                    ,?
+                    ,?
+                    ,?
+                    ,?
+                    ,?
+                    ,?
+                  )
+	</entry>
+	
+	<entry key = "idCheck">
+		SELECT COUNT(*)
+		  FROM MEMBER
+		 WHERE USER_ID = ?
+	</entry>
+	
+	<entry key="selectMemberList">
+		SELECT
+		       USER_NO
+		       ,USER_ID
+		       ,USER_NAME
+		       ,EMAIL
+		       ,ENROLL_DATE
+		  FROM 
+		       MEMBER 
+		 ORDER BY USER_NO DESC
+	</entry>
+	
+	<entry key="searchMemberKeyword">
+		 SELECT *
+		 FROM MEMBER
+		 WHERE USER_NO = ?
+	</entry>
+	<entry key="memberDetail">
+		  SELECT TRAVEL_DATE, TRAVELTYPE1, DECODE(TRAVELTYPE1, 'HOTEL', H.NAME, 'LANDSCAPE', L.NAME,
+                                        'ACTIVITY', A.NAME) TS_NAME, FOODTYPE, R1.RS_NAME RS_NAME, R2.RS_NAME RS_NAME2, R3.RS_NAME RS_NAME3
+		  FROM MEMBERTRAVELHISTORY
+		  LEFT JOIN HOTEL H ON (TRAVELSPOT1 = TS_NO)
+		  LEFT JOIN LANDSCAPE L ON (TRAVELSPOT1 = L.TS_NO)
+		  LEFT JOIN ACTIVITY A ON (TRAVELSPOT1 = A.TS_NO)
+		  LEFT JOIN RESTAURANT R1 ON (RESTAURANT1 = R1.RS_NO)
+		  LEFT JOIN RESTAURANT R2 ON (RESTAURANT2 = R2.RS_NO)
+  		  LEFT JOIN RESTAURANT R3 ON (RESTAURANT3 = R3.RS_NO)
+		  WHERE USER_NO=?
+	</entry>
+	
+	<entry key="memberDetail2">
+		    SELECT HR.CATEGORY, NAME, REVIEW_CONTENT, CREATE_DATE
+			FROM HOTELREVIEW HR
+			LEFT JOIN HOTEL H ON (HR.TS_NO = H.TS_NO)
+			WHERE REVIEW_WRITER = ?
+			UNION ALL
+			SELECT LR.CATEGORY, NAME, REVIEW_CONTENT, CREATE_DATE
+			FROM LANDSCAPEREVIEW LR
+			LEFT JOIN LANDSCAPE L ON (LR.TS_NO = L.TS_NO)
+			WHERE REVIEW_WRITER = ?
+			UNION ALL
+			SELECT AR.CATEGORY, NAME, REVIEW_CONTENT, CREATE_DATE
+			FROM ACTIVITYREVIEW AR
+			LEFT JOIN ACTIVITY A ON (AR.TS_NO = A.TS_NO)
+			WHERE REVIEW_WRITER = ?
+			UNION ALL
+			SELECT RR.CATEGORY, RS_NAME, REVIEW_CONTENT, CREATE_DATE
+			FROM RESTAURANTREVIEW RR
+			LEFT JOIN RESTAURANT R ON (RR.RS_NO = R.RS_NO)
+			WHERE REVIEW_WRITER = ?
+
+	</entry>
+	
+	<!--==============================-->
+	<!--2022.1.1() h-->
+	<entry key="">
+		
+	</entry>
+	
+	<!--2022.1.1() h-->
+	<entry key="">
+		
+	</entry>
+
+</properties>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>리뷰 관련 쿼리문들</comment>
+	<!--2022.1.23(일) 21h50-->
+	
+	<entry key="selectHotelReviewListCount">
+		SELECT COUNT(*) COUNT
+		FROM HOTELREVIEW
+		WHERE TS_NO = ? AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectLandscapeReviewListCount">
+		SELECT COUNT(*) COUNT
+		FROM LANDSCAPEREVIEW
+		WHERE TS_NO = ? AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectActivityReviewListCount">
+		SELECT COUNT(*) COUNT
+		FROM ACTIVITYREVIEW
+		WHERE TS_NO = ? AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectRestaurantReviewListCount">
+		SELECT COUNT(*) COUNT
+		FROM RESTAURANTREVIEW
+		WHERE CATEGORY = ?
+		 AND RS_NO = ?
+		 AND STATUS = 'Y'
+	</entry>
+	
+	<!--2022.1.24(월) 0h5-->
+	<entry key="selectHotelReviewList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT USER_ID, REPLACE(USER_NAME, SUBSTR(USER_NAME, 2, 1), '*') USER_NAME, TS_NO, CATEGORY, REVIEW_CONTENT, CREATE_DATE, FILE_PATH||FILE_NAME "TITLEIMG"
+		                FROM HOTELREVIEW H
+		                LEFT JOIN MEMBER ON (REVIEW_WRITER = USER_NO)
+		                WHERE TS_NO = ? AND H.STATUS = 'Y'
+		                ORDER BY CREATE_DATE DESC) A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<entry key="selectLandscapeReviewList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT USER_ID, REPLACE(USER_NAME, SUBSTR(USER_NAME, 2, 1), '*') USER_NAME, TS_NO, CATEGORY, REVIEW_CONTENT, CREATE_DATE, FILE_PATH||FILE_NAME "TITLEIMG"
+		                FROM LANDSCAPEREVIEW L
+		                LEFT JOIN MEMBER ON (REVIEW_WRITER = USER_NO)
+		                WHERE TS_NO = ? AND L.STATUS = 'Y'
+		                ORDER BY CREATE_DATE DESC) A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<entry key="selectActivityReviewList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT USER_ID, REPLACE(USER_NAME, SUBSTR(USER_NAME, 2, 1), '*') USER_NAME, TS_NO, CATEGORY, REVIEW_CONTENT, CREATE_DATE, FILE_PATH||FILE_NAME "TITLEIMG"
+		                FROM ACTIVITYREVIEW A
+		                LEFT JOIN MEMBER ON (REVIEW_WRITER = USER_NO)
+		                WHERE TS_NO = ? AND A.STATUS = 'Y'
+		                ORDER BY CREATE_DATE DESC) A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	<!--2022.1.26(수) 16h20-->
+	<entry key="selectFoodReviewListCount">
+		SELECT COUNT(*) COUNT
+		FROM RESTAURANTREVIEW
+		WHERE RS_NO = ? AND CATEGORY = ? AND STATUS = 'Y'
+	</entry>
+	
+	<entry key="selectFoodReviewList">
+		SELECT *
+		FROM (SELECT ROWNUM RNUM, A.*
+		        FROM (SELECT USER_ID, REPLACE(USER_NAME, SUBSTR(USER_NAME, 2, 1), '*') USER_NAME, RS_NO, CATEGORY, REVIEW_CONTENT, CREATE_DATE, FILE_PATH||FILE_NAME "TITLEIMG"
+		                FROM RESTAURANTREVIEW R
+		                LEFT JOIN MEMBER ON (REVIEW_WRITER = USER_NO)
+		                WHERE RS_NO = ? AND CATEGORY = ? AND R.STATUS = 'Y'
+		                ORDER BY CREATE_DATE DESC) A)
+		WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	
+	
+	<!--==============================-->
+	<!--2022.1.1() h-->
+	<entry key="">
+		
+	</entry>
+	
+	<!--2022.1.1() h-->
+	<entry key="">
+		
+	</entry>
+
+</properties>

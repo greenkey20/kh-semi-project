@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>문의 관련 쿼리문</comment>
+	<entry key="insertQuestion">
+	INSERT INTO
+					QUESTION
+							(
+							   Q_NO
+							  ,Q_TITLE
+							  ,Q_CONTENT
+							  ,USER_NO
+							  ,USER_ID
+							  ,USER_NAME 
+							)
+					VALUES
+							(
+							SEQ_QNO.NEXTVAL
+							, ?
+							, ?
+							, ?
+							, ?
+							, ?
+							)	
+	</entry>
+	<entry key="selectQuestionList">
+  	SELECT * 
+  	FROM 
+  	( SELECT ROWNUM RNUM, A.* 
+  	 FROM 
+  	( SELECT Q_NO ,Q_TITLE ,USER_NAME ,USER_ID ,Q_DATE ,A_STATUS
+ 	  FROM QUESTION WHERE Q_STATUS = 'Y'
+	  ORDER BY Q_NO DESC ) 
+	A)
+	WHERE RNUM BETWEEN ? AND ?
+	</entry>
+	<entry key="listCount">
+	SELECT COUNT(*) COUNT FROM QUESTION
+	</entry>
+	<entry key="questionDetail">
+	SELECT 
+			Q_NO
+			,Q_TITLE
+			,Q_CONTENT
+			,USER_NAME
+			,USER_ID
+			,Q_DATE
+			,ANSWER
+			,A_STATUS
+	FROM
+			QUESTION
+	WHERE 
+			Q_STATUS = 'Y'
+	AND		
+			Q_NO = ?
+	</entry>
+	<entry key="answer">
+	UPDATE QUESTION 
+	SET ANSWER = ?,
+		A_STATUS = 'Y'
+	WHERE Q_NO = ?
+	
+	</entry>
+	<entry key="questionDelete">
+	DELETE FROM QUESTION
+	WHERE Q_NO = ?
+	</entry>
+	
+</properties>
